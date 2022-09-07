@@ -1,7 +1,26 @@
 {
   "name": "md-links",
   "version": "0.1.0",
+  "keywords": [
+    "javascript",
+    "jest"
+  ],
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --coverage"
+  },
   "engines": {
     "node": ">=16.x"
+  },
+  "main": "index.js",
+  "bin": {
+    "md-links": "./cli.js"
+  },
+  "devDependencies": {
+    "jest": "^29.0.1"
+  },
+  "dependencies": {
+    "@laboratoria/curriculum-parser": "github:Laboratoria/course-parser",
+    "markdown-it": "^13.0.1"
   }
 }
