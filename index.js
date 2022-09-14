@@ -1,86 +1,87 @@
-const fs = require('node:fs');   // Exporto de file system
-const path = require('node:path'); // Exporto de path
+const fs = require('node:fs');
+const path = require('node:path'); // Importo de path
+const axios = require('axios'); 
+const { link } = require('node:fs');
 
-// 1. Existe la ruta
-/* const existPath = fs.existsSync('E:\Laboratoria Proyecto 4\LIM018-md-links\cli.js');
-console.log(existPath);
- */
-function existeRuta(path){
-  return fs.existsSync( path )
+// 1. Función existe la ruta
+const existPath = (enteredPath) => {
+  return fs.existsSync(enteredPath);
+}; // Esta función me devuelve 1  booleano
+/* console.log(existPath('E:/Laboratoria-Proyecto4/LIM018-md-links/cli.js')); */
+ 
+// 2. Función la ruta es absoluta
+const pathIsAbsolute = (enteredPath) => {
+  return path.isAbsolute(enteredPath); 
+};
+
+// 3. Función convierte la ruta a absoluta
+const convertToAbsolute = (enteredPath) => {
+  return pathIsAbsolute(enteredPath) ? enteredPath : path.resolve(enteredPath);
+};
+//console.log(convertToAbsolute('cli.js'));
+
+// 4. Función para saber el tipo de extensión del archivo
+const tipeOfExtension = (enteredPath) => {
+  return path.extname(enteredPath);
 }
-console.log(existeRuta('archivos-prueba')); // Esta función me devuelve 1  booleano
+/* console.log(tipeOfExtension('E:/Laboratoria-Proyecto4/LIM018-md-links/archivos-prueba/PRUEBA1.md')); */
 
-// Función según mi diagrama
-const existeLaRuta = (ruta) => {
-  if(fs.existsSync(ruta)){
-    return (ruta);
-  } else {
-    return('Error 400 (no existe la ruta)');
-  }
-}
-console.log(existeLaRuta('archivos-pruebas')); 
-
-// 2. ¿El tipo de ruta es absoluta?
-/* const pathIsAbsolute = path.isAbsolute('./archivos-prueba'); 
-console.log(pathIsAbsolute); */
-
-// Convierte la ruta relativa a absoluta
-/* const convertirAbsoluta = path.resolve('cli.js');
-console.log(convertirAbsoluta); */
-
-const esAbsoluta = (ruta) => {
-  if (path.isAbsolute(ruta)){
-    /* console.log('La ruta es absoluta'); */
-    return ruta;
- } else {
-   /*  console.log('Convierte la ruta relativa a absoluta'); */
-    return path.resolve(ruta); // convierte la ruta en absoluta
-  }
-}; 
-
-/* console.log(esAbsoluta('E:/Laboratoria-Proyecto4/LIM018-md-links/cli.js'));
-console.log(esAbsoluta('cli.js'));
- */
-
-// ¿Es un archivo md? Verificar la extensión de mi archivo
-
-const tipoExtension = (archivo) => {
-  if(path.extname(archivo) === '.md'){ // Devuelve la extensión de la ruta
-    return fs.readFileSync( archivo , 'utf-8'); // Lee el contenido de un archivo md
-  } else {
-    return ('Error 400 (no es un archivos md)')
-  }
+// 5. Función para leer el archivo md
+const readFile = (file) => {
+  return fs.readFileSync(file, 'utf-8'); 
 }
 
-console.log(tipoExtension(esAbsoluta('./archivos-prueba/PRUEBA1.md')));
+// 6. Función para saber si el archivo md incluye links
+const fileInfomation = (enteredFile) => {
+  const regularExpretion = /\[([^\[]+)\](\(https:.*\))/gm;
+  const readFile = fs.readFileSync(enteredFile, 'utf-8');
+  const arrayOfLinks = [];
+
+  const foundLinks = readFile.match(regularExpretion);
+
+  if (foundLinks) {
+    foundLinks.forEach((link) => {
+      const separator = link.indexOf(']'); // encuentra el 1er elem q coincida
+      // lo que tiene que estar en mi objeto
+      const href = link.slice(separator + 2, link.length - 1);
+      const text = link.slice(1, separator); // hasta el txtRef sin incluirme el 
+      const file = enteredFile;
+
+      arrayOfLinks.push({ href, text, file });
+    });
+  };
+  return arrayOfLinks;
+}
+/* console.log(fileInfomation('archivos-prueba/PRUEBA1.md'));  */ // es 1 obj con la información del archivo
 
 
+// 7. Función para validar status de los link con petición HTTP
+const validateLinksStatus = (arrayOfLinks) => {
+  return Promise.all(arrayOfLinks.map((link) => {
+    return axios.get(link.href) // queremos hacer 1 petición a esta dirección
 
+    .then((response) => {
+      link.status = response.status;
+      link.message = response.statusText;
+      return link;
+    })
+    
+    .catch((error) => {
+      link.status = error.response.status;
+      link.message = 'fail';
+      return link;
+    })
 
+  }))
+}  
+validateLinksStatus(fileInfomation('./archivos-prueba/PRUEBA1.md')).then((response) => console.log(response));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Convertir en string
-/* const MarkdownIt = require('archivos-prueba'),
-md = new MarkdownIt();
-
-console.log(md); */
+module.exports = {
+  existPath,
+  pathIsAbsolute,
+  convertToAbsolute,
+  tipeOfExtension,
+  readFile,
+  fileInfomation,
+  validateLinksStatus,
+};

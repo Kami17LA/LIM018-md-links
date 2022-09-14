@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@laboratoria/curriculum-parser": "github:Laboratoria/course-parser",
+    "axios": "^0.27.2",
     "markdown-it": "^13.0.1"
   }
 }
