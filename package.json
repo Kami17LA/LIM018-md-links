@@ -5,6 +5,7 @@
     "javascript",
     "jest"
   ],
+  
   "scripts": {
     "start": "node index.js",
     "test": "jest --coverage"
@@ -14,7 +15,7 @@
   },
   "main": "index.js",
   "bin": {
-    "md-links": "./cli.js"
+    "hi-kami": "./cli.js"
   },
   "devDependencies": {
     "jest": "^29.0.1"
