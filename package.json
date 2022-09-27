@@ -5,7 +5,6 @@
     "javascript",
     "jest"
   ],
-  
   "scripts": {
     "start": "node index.js",
     "test": "jest --coverage"
@@ -14,8 +13,9 @@
     "node": ">=16.x"
   },
   "main": "index.js",
-  "bin": {
-    "hi-kami": "./cli.js"
+  
+  "bin":{
+    "hi-kami":"./cli.js"
   },
   "devDependencies": {
     "jest": "^29.0.1"
@@ -23,6 +23,7 @@
   "dependencies": {
     "@laboratoria/curriculum-parser": "github:Laboratoria/course-parser",
     "axios": "^0.27.2",
+    "chalk": "^4.1.0",
     "markdown-it": "^13.0.1"
   }
 }

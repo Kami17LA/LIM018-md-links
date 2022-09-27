@@ -29,7 +29,7 @@ const isFile = (enteredPath) => {
 }
 /* console.log('es un archivo')
 console.log(isFile('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md'));
-console.log(isFile('dir-prueba1')); */
+console.log(isFile('dir-prueba1'));  */
 
 // 5. Función para saber el tipo de extensión del archivo
 const tipeOfExtension = (enteredPath) => {
@@ -41,6 +41,7 @@ console.log(tipeOfExtension('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba
 // 6. Función para leer el archivo md IMPORTANTE
 const readFile = (file) => {
   if(tipeOfExtension(file)){
+    console.log(file , 'que me traes');
     return fs.readFileSync(file, 'utf-8'); 
   } else {
     throw ('No se encontraron archivos con extensión .md')
@@ -52,8 +53,8 @@ const readFile = (file) => {
 // 7. Función para leer un directorio
 const readDir = (dir) => {
   return fs.readdirSync(dir);
-}
-/* console.log(readDir('dir-prueba1' , 'leer un directorio')); */
+} 
+/* console.log(readDir('dir-prueba1' , 'leer un directorio')); */ 
 
 // 8. Función para saber sí mi archivo incluye links .md
 const getLinksMD = (enteredFile) => { // entra 1 archivo
@@ -78,11 +79,12 @@ const getLinksMD = (enteredFile) => { // entra 1 archivo
   });
   return arrayOfLinks;
 }  
-/* console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')); 
-console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba2/otro-archi.txt')); */
+console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')); 
+/* console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba2/otro-archi.txt'));  */
 
 // 9. Función para validar status de los links del archivo con petición HTTP
 const validateLinkStatus = (path) => { // le paso 1 ruta
+  /* console.log(path, 'que me estas pasando') */
   const arrayOfObj = getLinksMD(path); // le paso 1 array de obj
   return Promise.all(arrayOfObj.map((link) => {
     return axios.get(link.href) // quiero hacer 1 petición HTTP a esta dirección
@@ -98,19 +100,18 @@ const validateLinkStatus = (path) => { // le paso 1 ruta
      })
   }))
 }
-/* console.log(validateLinkStatus(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')).then((response) => {
+/* validateLinkStatus('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1').then((response) => {
   console.log(response)
-})); */
+});  */
 
 
-// 11. Función recursiva entrar al directorio y extraer los archivos
+// 10. Función recursiva entrar al directorio y extraer los archivos
 const obtainDirAndFiles = (enteredPath) => {
   const arrayOfFiles = [];
   if(isFile(enteredPath)){
     return [enteredPath]
   } else {
     const readDirectory = readDir(enteredPath);
-
     readDirectory.forEach((dir) => {
       const newPath = path.join(enteredPath, dir);
       arrayOfFiles.push(obtainDirAndFiles(newPath));
@@ -121,9 +122,53 @@ const obtainDirAndFiles = (enteredPath) => {
 
 /* console.log('recursión');
 console.log(obtainDirAndFiles('dir-prueba1')); 
-console.log(obtainDirAndFiles('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')); */
+console.log(obtainDirAndFiles('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md'));  */ 
 
-// 12. Función MD-LINKS
+const newArray =
+[
+  {
+    href: 'https://es.wikipedia.org/wiki/Markdown',
+    text: 'Markdown',
+    file: 'E:\\Laboratoria-Proyecto4\\LIM018-md-links\\dir-prueba2\\archi-prueba3.md'
+  },
+  {
+    href: 'https://nodejs.org/',
+    text: 'Node.js',
+    file: 'E:\\Laboratoria-Proyecto4\\LIM018-md-links\\dir-prueba2\\archi-prueba3.md'
+  },
+  {
+    href: 'https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg',
+    text: 'md-links',
+    file: 'E:\\Laboratoria-Proyecto4\\LIM018-md-links\\dir-prueba2\\archi-prueba3.md'
+  }
+]
+// 11. Funciones para representar estadísticas del total
+// Total Stats
+const totalStats = (arrayOfLinks) => {
+  const totalLinks = arrayOfLinks.length;
+  return totalLinks
+};
+/* console.log(totalStats(newArray));  */
+
+// Unique Stats
+const uniqueStats = (arrayOfLinks) => {
+  const uniqueLinks = [...new Set(arrayOfLinks.map((link) => {
+    return link.href;
+  }))]
+  return uniqueLinks.length;
+}
+/* console.log(uniqueStats(newArray)); */
+
+// Broken Stats
+const brokenStats = (arrayOfLinks) => {
+  const brokenLinks = arrayOfLinks.filter((link) => {
+    return link.ok === 'Fail';
+  })
+  return brokenLinks.length;
+}
+/* console.log(brokenStats(newArray)); */
+
+// Función MD-LINKS
 const mdLinks = (path, options) =>{
   return new Promise ((resolve, reject) => {
     if(!existPath(path)){
@@ -132,21 +177,34 @@ const mdLinks = (path, options) =>{
     //2. ¿El tipo de ruta es absoluta?
     const absolutePath = convertToAbsolute(path); // convierte la ruta a abs
     /* console.log(absolutePath , 'Y tú');  */
-    const arrayOfFilesPaths = obtainDirAndFiles(absolutePath);
-    arrayOfFilesPaths.forEach((path) => {
-      if(options.validate === true){
-        resolve(validateLinkStatus(path))
+    let arrayOfFilesPaths = obtainDirAndFiles(absolutePath);
+    /* console.log(arrayOfFilesPaths,'que me tiene que salir') */
+    const arrayOfFilesPaths2 = arrayOfFilesPaths.map((path) => {
+      /* if(options.validate === true){ */
+        return validateLinkStatus(path)
         .then((response) => {
-          console.log(response)
+          /* console.log(response, 'mio'); */
+          return response
         })
-      }else{
+     /*  }else{
         resolve(getLinksMD(path))
-      }
+      } */
     }); 
+    if(options.validate === true){
+      Promise.all(arrayOfFilesPaths2).then((response) => {
+        resolve(response.flat())
+      });
+    } else{
+      arrayOfFilesPaths = arrayOfFilesPaths.map((path) => {
+        return getLinksMD(path)
+      });
+      /* console.log(arrayOfFilesPaths, 'que devuelves?') */
+      resolve(arrayOfFilesPaths.flat())
+    }
   });
 };
 
-mdLinks('./dir-prueba2', {validate:true}).then(console.log).catch(console.error); 
+/* mdLinks('./dir-prueba1', {validate:true}).then(console.log).catch(console.error);   */
 /* mdLinks('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md', {validate:true})
 .then(console.log)
 .catch(console.error); */
@@ -157,6 +215,16 @@ module.exports = {
   existPath,
   pathIsAbsolute,
   convertToAbsolute,
+  isFile,
   tipeOfExtension,
   readFile,
+  readDir,
+  getLinksMD,
+  validateLinkStatus,
+  obtainDirAndFiles,
+  totalStats,
+  uniqueStats,
+  brokenStats,
+  mdLinks,
+  
 };
