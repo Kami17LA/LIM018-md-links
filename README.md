@@ -1,3 +1,95 @@
+# MARKDOWN LINKS
+
+Markdown es un lenguaje de marcado ligero, que trata de conseguir la máxima 
+legibilidad y facilidad de publicación tanto en su forma de entrada como de 
+salida, inspirándose en muchas convenciones existentes para marcar mensajes 
+de correo electrónico usando texto plano. 
+
+Texto plano: estos textos carecen de información destinada a generar formatos 
+(negritas, subrayado, cursivas, tamaño, etc.) ​ y tipos de letra (por ejemplo, 
+Arial, Times, Courier, etc.). ​ Esta simplicidad permite que una gran variedad 
+de programas pueda leer y editar ese contenido.
+
+## DIAGRAMA DE FLUJO
+
+![DiagramaMDLinks](DiagramaMDLinks.png)
+
+## INSTALAR
+
+
+
+## VERSIÓN
+
+
+
+## COMANDO CLI
+
+`md-links [options]`
+____________________
+
+`<path-file>` : ruta de un archivo.
+`<path-directory>` : ruta de un directorio.
+
+`[options]` : las opciones son las siguientes:
+
+ * `--validate` : con esta opción se hace la petición HTTP.
+
+ * `--stats` : con esta opción obtendremos las estadísticas de los links 
+ encontrados, como el total de links y los links unicos.
+
+ * `--validate --stats`: esta opción nos devuelve las estadísticas mas 
+ completas como el total de links, links unicos y links rotos.
+
+
+### Caso 1
+
+Sí el usuario no ingresa una ruta, se mostrara un mensaje de error:
+
+- No existe la ruta, ingrese una ruta valida.
+
+### Caso 2
+
+Sí el usuario ingresa una ruta de un directorio o archivo, se mostrara la 
+siguiente información:
+Ejemplo:
+
+- hi-kami dir-prueba1
+
+![archivoSolo](archivoSolo.JPG)
+
+### Caso 3
+
+Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
+--validate, se mostrara la siguiente información:
+Ejemplo:
+
+- hi-kami dir-prueba1 --validate
+
+![validate](validate.JPG)
+
+### Caso 4
+
+Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
+--stats, se mostrara la siguiente información:
+Ejemplo:
+
+- hi-kami dir-prueba1 --stats
+
+![stats](stats.JPG)
+
+### Caso 5
+
+Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
+--validate --stats ó --stats --validate, se mostrara la siguiente información:
+Ejemplo:
+
+- hi-kami dir-prueba1 --validate --stats
+
+![validate-stats](validate-stats.JPG)
+
+______________________________________________________________________________________________________
+
+
 # Markdown Links
 
 ## Índice

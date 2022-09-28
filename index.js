@@ -17,7 +17,7 @@ const pathIsAbsolute = (enteredPath) => {
 };
 /* console.log(pathIsAbsolute('E:/Laboratoria-Proyecto4/LIM018-md-links/cli.js')); */
 
-// 3. Función convierte la ruta a absoluta IMPORTANTE
+// 3. Función convierte la ruta a absoluta 
 const convertToAbsolute = (enteredPath) => {
   return pathIsAbsolute(enteredPath) ? enteredPath : path.resolve(enteredPath);
 };
@@ -41,7 +41,7 @@ console.log(tipeOfExtension('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba
 // 6. Función para leer el archivo md IMPORTANTE
 const readFile = (file) => {
   if(tipeOfExtension(file)){
-    console.log(file , 'que me traes');
+    /* console.log(file , 'que me traes'); */
     return fs.readFileSync(file, 'utf-8'); 
   } else {
     throw ('No se encontraron archivos con extensión .md')
@@ -79,7 +79,7 @@ const getLinksMD = (enteredFile) => { // entra 1 archivo
   });
   return arrayOfLinks;
 }  
-console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')); 
+/* console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md'));  */
 /* console.log(getLinksMD('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba2/otro-archi.txt'));  */
 
 // 9. Función para validar status de los links del archivo con petición HTTP
@@ -112,8 +112,8 @@ const obtainDirAndFiles = (enteredPath) => {
     return [enteredPath]
   } else {
     const readDirectory = readDir(enteredPath);
-    readDirectory.forEach((dir) => {
-      const newPath = path.join(enteredPath, dir);
+    readDirectory.forEach((file) => {
+      const newPath = path.join(enteredPath, file);
       arrayOfFiles.push(obtainDirAndFiles(newPath));
     });
     return arrayOfFiles.flat();
@@ -121,8 +121,8 @@ const obtainDirAndFiles = (enteredPath) => {
 }
 
 /* console.log('recursión');
-console.log(obtainDirAndFiles('dir-prueba1')); 
-console.log(obtainDirAndFiles('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md'));  */ 
+console.log(obtainDirAndFiles('dir-prueba1'));  */
+/* console.log(obtainDirAndFiles('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md')); */
 
 const newArray =
 [
@@ -176,38 +176,35 @@ const mdLinks = (path, options) =>{
     }
     //2. ¿El tipo de ruta es absoluta?
     const absolutePath = convertToAbsolute(path); // convierte la ruta a abs
-    /* console.log(absolutePath , 'Y tú');  */
-    let arrayOfFilesPaths = obtainDirAndFiles(absolutePath);
-    /* console.log(arrayOfFilesPaths,'que me tiene que salir') */
-    const arrayOfFilesPaths2 = arrayOfFilesPaths.map((path) => {
-      /* if(options.validate === true){ */
-        return validateLinkStatus(path)
-        .then((response) => {
-          /* console.log(response, 'mio'); */
-          return response
-        })
-     /*  }else{
-        resolve(getLinksMD(path))
-      } */
+    /* console.log(absolutePath , 'que ruta es');  */
+    let arrayOfFilesPaths = obtainDirAndFiles(absolutePath);// recursión
+    // array con rutas de archi de la recursión
+    const arrayOfFilesPaths2 = arrayOfFilesPaths.map((path) => { //rutas de archivos
+      return validateLinkStatus(path) 
+      .then((response) => {
+        return response
+        //array de promesas pendientes
+      })
     }); 
+
     if(options.validate === true){
       Promise.all(arrayOfFilesPaths2).then((response) => {
-        resolve(response.flat())
+        resolve(response.flat());
       });
     } else{
       arrayOfFilesPaths = arrayOfFilesPaths.map((path) => {
-        return getLinksMD(path)
+        return getLinksMD(path);
       });
-      /* console.log(arrayOfFilesPaths, 'que devuelves?') */
       resolve(arrayOfFilesPaths.flat())
     }
+
   });
 };
 
-/* mdLinks('./dir-prueba1', {validate:true}).then(console.log).catch(console.error);   */
+/* mdLinks('./dir-prueba1', {validate:false}).then(console.log).catch(console.error); */  
 /* mdLinks('E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md', {validate:true})
 .then(console.log)
-.catch(console.error); */
+.catch(console.error); */ 
 
 
 

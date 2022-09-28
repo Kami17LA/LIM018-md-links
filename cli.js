@@ -64,8 +64,8 @@ if(!isValidate && !isStats){
       ********** STATS *****************
       __________________________________
 
-                TOTAL  : ${colorText.blueBright(totalStats(links))};
-                UNIQUE : ${colorText.redBright(uniqueStats(links))};
+                TOTAL LINKS  : ${colorText.blueBright(totalStats(links))};
+                UNIQUE LINKS : ${colorText.redBright(uniqueStats(links))};
 
       **********************************
         `
@@ -81,9 +81,9 @@ if(!isValidate && !isStats){
     ********* STATS Y VALIDATE *********
     ____________________________________
     
-                TOTAL  : ${colorText.blueBright(totalStats(links))};
-                UNIQUE : ${colorText.redBright(uniqueStats(links))}; 
-                BROKEN : ${colorText.bgCyan(brokenStats(links))};   
+                TOTAL LINKS  : ${colorText.blueBright(totalStats(links))};
+                UNIQUE LINKS : ${colorText.redBright(uniqueStats(links))}; 
+                BROKEN LINKS : ${colorText.bgCyan(brokenStats(links))};   
 
     ************************************
       `

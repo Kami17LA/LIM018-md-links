@@ -41,17 +41,20 @@ arrayOfObjResponse = [
     href: 'https://es.wikipedia.org/wiki/Markdown',
     text: 'Markdown',
     file: 'E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md',
-    statusR: 200,
-    ok: 'OK',
+    status: 200,
+    message: 'OK'
   },
   {
     href: 'https://nodejs.org/',
     text: 'Node.js',
     file: 'E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md',
-    statusR: 200,
-    ok: 'OK',
+    status: 200,
+    message: 'OK'
   }
 ]
+
+// Path para validate link status
+const path1 = 'E:/Laboratoria-Proyecto4/LIM018-md-links/dir-prueba1/archi-prueba1.md';
 
 
 describe('existPath', () => {
@@ -184,9 +187,9 @@ describe('validateLinkStatus', () => {
       statusText: 'OK',
     }
     axios.get.mockResolvedValue(respuesta);
-    validateLinkStatus(arrayOfObj)
+    validateLinkStatus(path1)
       .then((response) => {
-        expect((response).toEqual(arrayOfObjResponse))
+        expect(response).toEqual(arrayOfObjResponse)
       });
   });
 
@@ -196,9 +199,11 @@ describe('validateLinkStatus', () => {
       statusText: 'Fail',
     }
     axios.mockResolvedValue(respuesta);
-    validateLinkStatus(arrayOfObjResponse)
+    validateLinkStatus(path1)
     .then((response) => {
       expect(response).toEqual(arrayOfObjResponse)
     })
-  })
+  }) 
 })
+
+
