@@ -14,13 +14,15 @@ de programas pueda leer y editar ese contenido.
 
 ![DiagramaMDLinks](DiagramaMDLinks.png)
 
+
+
 ## INSTALAR
 
-
+npm i md-links-kami -g
 
 ## VERSIÓN
 
-
+0.1.1
 
 ## COMANDO CLI
 
@@ -51,9 +53,10 @@ Sí el usuario no ingresa una ruta, se mostrara un mensaje de error:
 
 Sí el usuario ingresa una ruta de un directorio o archivo, se mostrara la 
 siguiente información:
+
 Ejemplo:
 
-- hi-kami dir-prueba1
+- mdLinks-kami dir-prueba1
 
 ![archivoSolo](archivoSolo.JPG)
 
@@ -61,9 +64,10 @@ Ejemplo:
 
 Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
 --validate, se mostrara la siguiente información:
+
 Ejemplo:
 
-- hi-kami dir-prueba1 --validate
+- mdLinks-kami dir-prueba1 --validate
 
 ![validate](validate.JPG)
 
@@ -71,9 +75,10 @@ Ejemplo:
 
 Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
 --stats, se mostrara la siguiente información:
+
 Ejemplo:
 
-- hi-kami dir-prueba1 --stats
+- mdLinks-kami dir-prueba1 --stats
 
 ![stats](stats.JPG)
 
@@ -81,9 +86,10 @@ Ejemplo:
 
 Sí el usuario ingresa una ruta de un directorio o archivo con la OPCIÓN 
 --validate --stats ó --stats --validate, se mostrara la siguiente información:
+
 Ejemplo:
 
-- hi-kami dir-prueba1 --validate --stats
+- mdLinks-kami dir-prueba1 --validate --stats
 
 ![validate-stats](validate-stats.JPG)
 

@@ -1,6 +1,6 @@
 {
-  "name": "md-links",
-  "version": "0.1.0",
+  "name": "md-links-kami",
+  "version": "0.1.1",
   "keywords": [
     "javascript",
     "jest"
@@ -13,9 +13,9 @@
     "node": ">=16.x"
   },
   "main": "index.js",
-  
+  "license": "ISC",
   "bin":{
-    "hi-kami":"./cli.js"
+    "mdLinks-kami":"./cli.js"
   },
   "devDependencies": {
     "jest": "^29.0.1"
