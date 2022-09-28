@@ -94,7 +94,7 @@ const validateLinkStatus = (path) => { // le paso 1 ruta
       return link;
     })
     .catch((error) => {
-      link.status = error.response.status;
+      link.status = error.response;
       link.message = 'Fail';
       return link;
      })
